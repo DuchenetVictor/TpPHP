@@ -86,7 +86,19 @@ class UserRepository
             ->set('prenom', ':prenom')
             ->setParameter(':prenom', $parameters['prenom']);
         }
+        if($parameters['age']) {
+            $queryBuilder
+            ->set('age', ':age')
+            ->setParameter('age', $parameters['age']);
+        }
+
+        if($parameters['telephone']) {
+            $queryBuilder
+            ->set('telephone', ':telephone')
+            ->setParameter('telephone', $parameters['telephone']);
+        }
         $statement = $queryBuilder->execute();
+        
     }
     public function insert($parameters)
     {
@@ -97,10 +109,14 @@ class UserRepository
               array(
                 'nom' => ':nom',
                 'prenom' => ':prenom',
+                'age' => ':age',
+                'telephone' => ':telephone',
               )
           )
           ->setParameter(':nom', $parameters['nom'])
-          ->setParameter(':prenom', $parameters['prenom']);
+          ->setParameter(':prenom', $parameters['prenom'])
+          ->setParameter(':age', $parameters['age'])
+          ->setParameter(':telephone', $parameters['telephone']);
         $statement = $queryBuilder->execute();
     }
 }
