@@ -5,7 +5,7 @@ use Doctrine\DBAL\Connection;
 /**
  * User repository.
  */
-class UserRepository
+class PcRepository
 {
     /**
      * @var \Doctrine\DBAL\Connection
@@ -19,13 +19,13 @@ class UserRepository
     * Returns a collection of users.
     *
     * @param int $limit
-    *   The number of users to return.
+    *   The number of pcs to return.
     * @param int $offset
-    *   The number of users to skip.
+    *   The number of pcs to skip.
     * @param array $orderBy
     *   Optionally, the order by info, in the $column => $direction format.
     *
-    * @return array A collection of users, keyed by user id.
+    * @return array A collection of pcs, keyed by pc id.
     */
    public function getAll()
    {
@@ -36,35 +36,35 @@ class UserRepository
        $statement = $queryBuilder->execute();
        $usersData = $statement->fetchAll();
        foreach ($pcsData as $pcData) {
-           $userEntityList[$pcData['id']] = new Pc($pcData['id'], $pcData['nom'], $pcData['prenom'], $pcData['age'], $pcData['telephone']);
+           $userEntityList[$pcData['id']] = new Pc($pcData['id'], $pcData['marque'], $pcData['model'], $pcData['os'], $pcData['prix']);
        }
        return $userEntityList;
    }
    /**
-    * Returns an User object.
+    * Returns an Pc object.
     *
     * @param $id
     *   The id of the user to return.
     *
-    * @return array A collection of users, keyed by user id.
+    * @return array A collection of pcs, keyed by pc id.
     */
    public function getById($id)
    {
        $queryBuilder = $this->db->createQueryBuilder();
        $queryBuilder
-           ->select('u.*')
-           ->from('users', 'u')
+           ->select('p.*')
+           ->from('pcs', 'p')
            ->where('id = ?')
            ->setParameter(0, $id);
        $statement = $queryBuilder->execute();
        $userData = $statement->fetchAll();
-       return new User($userData[0]['id'], $userData[0]['nom'], $userData[0]['prenom'], $userData[0]['age'], $userData[0]['telephone']);
+       return new User($userData[0]['id'], $userData[0]['marque'], $userData[0]['model'], $userData[0]['os'], $userData[0]['prix']);
    }
     public function delete($id)
     {
         $queryBuilder = $this->db->createQueryBuilder();
         $queryBuilder
-          ->delete('users')
+          ->delete('pcs')
           ->where('id = :id')
           ->setParameter(':id', $id);
         $statement = $queryBuilder->execute();
@@ -73,29 +73,29 @@ class UserRepository
     {
         $queryBuilder = $this->db->createQueryBuilder();
         $queryBuilder
-          ->update('users')
+          ->update('pcs')
           ->where('id = :id')
           ->setParameter(':id', $parameters['id']);
-        if ($parameters['nom']) {
+        if ($parameters['marque']) {
             $queryBuilder
-              ->set('nom', ':nom')
-              ->setParameter(':nom', $parameters['nom']);
+              ->set('pc', ':pc')
+              ->setParameter(':pc', $parameters['pc']);
         }
-        if ($parameters['prenom']) {
+        if ($parameters['model']) {
             $queryBuilder
-            ->set('prenom', ':prenom')
-            ->setParameter(':prenom', $parameters['prenom']);
+            ->set('model', ':model')
+            ->setParameter(':model', $parameters['model']);
         }
-        if($parameters['age']) {
+        if($parameters['os']) {
             $queryBuilder
-            ->set('age', ':age')
-            ->setParameter(':age', $parameters['age']);
+            ->set('os', ':os')
+            ->setParameter(':os', $parameters['os']);
         }
 
-        if($parameters['telephone']) {
+        if($parameters['prix']) {
             $queryBuilder
-            ->set('telephone', ':telephone')
-            ->setParameter(':telephone', $parameters['telephone']);
+            ->set('prix', ':prix')
+            ->setParameter(':prix', $parameters['prix']);
         }
         $statement = $queryBuilder->execute();
         
@@ -105,19 +105,19 @@ class UserRepository
         
         $queryBuilder = $this->db->createQueryBuilder();
         $queryBuilder
-          ->insert('users')
+          ->insert('pcs')
           ->values(
               array(
-                'nom' => ':nom',
-                'prenom' => ':prenom',
-                'age' => ':age',
-                'telephone' => ':telephone',
+                'marque' => ':marque',
+                'model' => ':model',
+                'os' => ':os',
+                'prix' => ':prix',
               )
           )
-          ->setParameter(':nom', $parameters['nom'])
-          ->setParameter(':prenom', $parameters['prenom'])
-          ->setParameter(':age', $parameters['age'])
-          ->setParameter(':telephone', $parameters['telephone']);
+          ->setParameter(':marque', $parameters['marque'])
+          ->setParameter(':model', $parameters['model'])
+          ->setParameter(':os', $parameters['os'])
+          ->setParameter(':prix', $parameters['prix']);
         $statement = $queryBuilder->execute();
         
     }
