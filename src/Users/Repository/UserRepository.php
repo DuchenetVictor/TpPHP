@@ -89,19 +89,20 @@ class UserRepository
         if($parameters['age']) {
             $queryBuilder
             ->set('age', ':age')
-            ->setParameter('age', $parameters['age']);
+            ->setParameter(':age', $parameters['age']);
         }
 
         if($parameters['telephone']) {
             $queryBuilder
             ->set('telephone', ':telephone')
-            ->setParameter('telephone', $parameters['telephone']);
+            ->setParameter(':telephone', $parameters['telephone']);
         }
         $statement = $queryBuilder->execute();
         
     }
     public function insert($parameters)
     {
+        
         $queryBuilder = $this->db->createQueryBuilder();
         $queryBuilder
           ->insert('users')
@@ -118,5 +119,6 @@ class UserRepository
           ->setParameter(':age', $parameters['age'])
           ->setParameter(':telephone', $parameters['telephone']);
         $statement = $queryBuilder->execute();
+        
     }
 }

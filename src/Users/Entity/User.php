@@ -16,8 +16,8 @@ class User
         $this->nom = $nom;
         $this->age = $age;
         $this->telephone = $telephone;
-
     }
+    
     public function setId($id)
     {
         $this->id = $id;
@@ -36,7 +36,7 @@ class User
     }
     public function setTelephone($telephone)
     {
-        $this->prenom = $telephone;
+        $this->telephone = $telephone;
     }
 
 
@@ -52,7 +52,7 @@ class User
     {
         return $this->nom;
     }
-    public function getage()
+    public function getAge()
     {
         return $this->age;
     }

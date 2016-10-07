@@ -2,6 +2,7 @@
 namespace App\Users\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+
 class IndexController
 {
     public function listAction(Request $request, Application $app)
@@ -24,7 +25,7 @@ class IndexController
     public function saveAction(Request $request, Application $app)
     {
         $parameters = $request->request->all();
-        if ($parameters['id']) {
+        if (isset($parameters['id'])) {
             $user = $app['repository.user']->update($parameters);
         } else {
             $user = $app['repository.user']->insert($parameters);
